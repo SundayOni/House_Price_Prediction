@@ -31,6 +31,28 @@ This project aims to build a predictive model for house prices using a dataset s
 
 ---
 
+## 📌 Problem Statement
+
+Accurately estimating house prices is crucial for buyers, sellers, developers, and policy makers in the real estate market. However, due to numerous influencing factors (e.g., location, property type, proximity to amenities), predicting house prices can be complex. This project seeks to build a reliable machine learning model to predict house prices in West Yorkshire, UK, using publicly available property listings data.
+
+---
+
+## 💡 Rationale & Stakeholder Relevance
+
+This project is valuable for:
+
+- Buyers: Understanding fair market prices.
+
+- Estate Agents: Supporting accurate valuations and listing strategies.
+
+- Policy Makers: Identifying housing trends across boroughs.
+
+- Data Scientists: Demonstrating end-to-end ML workflows on real-world tabular data.
+
+By combining data preprocessing, EDA, and multiple ML models (Linear Regression, Random Forest, XGBoost), this project aims to produce accurate, explainable results with practical use cases.
+
+---
+
 ## 📂 Dataset
 
 * **Source**: [Zoopla](https://www.zoopla.co.uk/)
