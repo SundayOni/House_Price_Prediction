@@ -1,4 +1,4 @@
-# 🏡 House Price Prediction
+# 🏡 Machine Learning-Based House Price Prediction: A Case Study in West Yorkshire, UK.
 
 A machine learning project to predict UK house prices using various regression models including Linear Regression, Random Forest, and XGBoost, with detailed EDA, preprocessing, and hyperparameter tuning.
 
@@ -7,13 +7,15 @@ A machine learning project to predict UK house prices using various regression m
 ## 📌 Table of Contents
 
 * [Overview](#overview)
+* [Problem Statement](#problem-statement)
+* [Rationale & Stakeholder Relevance](#rationale-stakeholder-elevance)
 * [Dataset](#dataset)
 * [EDA & Preprocessing](#eda--preprocessing)
 * [Modeling](#modeling)
 * [Evaluation](#evaluation)
-* [Results](#results)
+* [Hyperparameter Tuning](#hyperparameter-tuning)
+* [Recommendations](#recommendations)
 * [Conclusion](#conclusion)
-* [Next Steps](#next-steps)
 
 ---
 
