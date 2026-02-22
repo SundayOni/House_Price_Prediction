@@ -1,140 +1,98 @@
-# 🏡 Machine Learning-Based House Price Prediction: A Case Study in West Yorkshire, UK.
+# 🏡 House Price Prediction — West Yorkshire, UK
 
-A machine learning project to predict UK house prices using various regression models including Linear Regression, Random Forest, and XGBoost, with detailed EDA, preprocessing, and hyperparameter tuning.
-
----
-
-## 📌 Table of Contents
-
-* [Overview](#overview)
-* [Problem Statement](#problem-statement)
-* [Rationale & Stakeholder Relevance](#rationale-stakeholder-elevance)
-* [Dataset](#dataset)
-* [EDA & Preprocessing](#eda--preprocessing)
-* [Modeling](#modeling)
-* [Evaluation](#evaluation)
-* [Hyperparameter Tuning](#hyperparameter-tuning)
-* [Recommendations](#recommendations)
-* [Conclusion](#conclusion)
+A machine learning project to predict house prices using property listings data scraped from Zoopla. Covers end-to-end ML workflow including EDA, preprocessing, model building, and hyperparameter tuning.
 
 ---
 
-## 🔍 Overview
+## 📌 Project Overview
 
-This project aims to build a predictive model for house prices using a dataset scraped from Zoopla. It includes:
-
-* Cleaning and feature engineering
-* Exploratory Data Analysis (EDA)
-* Building and comparing ML models
-* Hyperparameter tuning for better performance
-* Feature importance analysis
+Accurately estimating house prices is crucial for buyers, sellers, and policy makers. This project builds and compares regression models to predict house prices across the five West Yorkshire metropolitan boroughs using features such as property type, number of rooms, tenure, and proximity to amenities.
 
 ---
 
-## 📌 Problem Statement
-
-Accurately estimating house prices is crucial for buyers, sellers, developers, and policy makers in the real estate market. However, due to numerous influencing factors (e.g., location, property type, proximity to amenities), predicting house prices can be complex. This project seeks to build a reliable machine learning model to predict house prices in West Yorkshire, UK, using publicly available property listings data.
-
----
-
-## 💡 Rationale & Stakeholder Relevance
-
-This project is valuable for:
-
-- Buyers: Understanding fair market prices.
-
-- Estate Agents: Supporting accurate valuations and listing strategies.
-
-- Policy Makers: Identifying housing trends across boroughs.
-
-- Data Scientists: Demonstrating end-to-end ML workflows on real-world tabular data.
-
-By combining data preprocessing, EDA, and multiple ML models (Linear Regression, Random Forest, XGBoost), this project aims to produce accurate, explainable results with practical use cases.
+## 📂 Project Structure
+```
+House_Price_Prediction/
+├── data/
+│   └── house_prices_west_yorkshire.csv   # Raw Zoopla listings data
+├── notebooks/
+│   ├── 01_preprocessing_and_eda.ipynb    # Data cleaning, feature engineering, EDA
+│   └── 02_modelling.ipynb                # Model building, evaluation, tuning
+├── requirements.txt
+└── README.md
+```
 
 ---
 
-## 📂 Dataset
+## 📊 Dataset
 
-* **Source**: [Zoopla](https://www.zoopla.co.uk/)
-* **Size**: \~X records with features like location, property type, number of rooms, distances to amenities, etc.
-* **Target Variable**: `price`
-
----
-
-## 📊 EDA & Preprocessing
-
-* Handled missing values and dropped irrelevant columns
-* Grouped categorical values (e.g. towns → boroughs, property types → property groups)
-* Conducted:
-
-  * **Univariate analysis**: distributions, value counts
-  * **Bivariate analysis**: price vs. features using barplots, boxplots, scatterplots
-* Scaled numerical features and one-hot encoded categorical ones using `ColumnTransformer` and `Pipeline`
+- **Source**: Zoopla property listings (scraped via API)
+- **Coverage**: West Yorkshire — Leeds, Bradford, Wakefield, Kirklees, Calderdale
+- **Target variable**: `price`
+- **Key features**: `rooms`, `numBaths`, `numRecepts`, `propertyGroup`, `MetBoroughs`, `tenure`, `listingCondition`, `ditsnace_to_school`, `ditsnace_to_train`
 
 ---
 
-## 🤖 Modeling
+## 🔧 Methodology
 
-Used three main models:
+### Preprocessing
+- Converted data types for count variables (`numBaths`, `numRecepts`)
+- Engineered `MetBoroughs` feature by mapping postcodes to West Yorkshire boroughs
+- Grouped 20+ granular property types into 6 broader categories (`propertyGroup`)
+- Handled missing values: median imputation for numeric fields, proportional imputation for `tenure`
+- Dropped irrelevant columns (free text, identifiers, redundant location fields)
 
-1. **Linear Regression**
-2. **Random Forest Regressor**
-3. **XGBoost Regressor**
-
-Each model was wrapped in a pipeline and trained using the same train/test split for fair comparison.
-
----
-
-## ⚙️ Hyperparameter Tuning
-
-* **Random Forest**:
-
-  * Tuned `n_estimators`, `max_depth`, `min_samples_split`
-  * Used `GridSearchCV`
-* **XGBoost**:
-
-  * Tuned `n_estimators`, `max_depth`, `learning_rate`, `colsample_bytree`
-  * Used `GridSearchCV`
+### Modelling
+- Built sklearn `Pipeline` objects combining `ColumnTransformer` preprocessing with each model
+- `StandardScaler` for numerical features, `OneHotEncoder` for categorical features
+- Compared three models: Linear Regression (baseline), Random Forest, XGBoost
 
 ---
 
-## 📈 Evaluation
+## 📈 Results
 
-Metrics used:
+### Before Hyperparameter Tuning
 
-* **R-squared (R²)**
-* **Root Mean Squared Error (RMSE)**
-* **Mean Absolute Error (MAE)**
+| Model | R² | RMSE | MAE |
+|---|---|---|---|
+| Linear Regression | 0.5909 | £125,866 | £78,358 |
+| Random Forest | 0.6532 | £115,891 | £71,711 |
+| XGBoost | 0.6718 | £112,749 | £68,932 |
 
-| Model                 | R²   | RMSE    | MAE     |
-| --------------------- | ---- | ------- | ------- |
-| Linear Regression     | 0.XX | XXXX.XX | XXXX.XX |
-| Random Forest (Tuned) | 0.XX | XXXX.XX | XXXX.XX |
-| XGBoost (Tuned)       | 0.XX | XXXX.XX | XXXX.XX |
+### After Hyperparameter Tuning (GridSearchCV, 5-fold CV)
 
----
+| Model | R² | RMSE | MAE |
+|---|---|---|---|
+| Random Forest (Tuned) | 0.6694 | £113,147 | £69,475 |
+| XGBoost (Tuned) | 0.6511 | £116,241 | £69,492 |
 
-## 🧪 Feature Importance
-
-* Plotted feature importances for Random Forest and XGBoost
-* Key predictors: `rooms`, `propertyGroup`, `borough`, `distance_to_school`, etc.
+> **Note:** Hyperparameter tuning did not improve performance in this case. The baseline XGBoost remains the best model (R² = 0.67). This is a known outcome when GridSearchCV overfits to cross-validation folds on limited data.
 
 ---
 
-## ✅ Conclusion
+## 🏆 Best Model
 
-* **XGBoost** performed best in terms of accuracy and generalization
-* Feature engineering (e.g., borough and property group) significantly improved model performance
-* Regularization and hyperparameter tuning helped reduce overfitting
+**XGBoost (Baseline)** — R² = 0.67, RMSE = £112,749, MAE = £68,932
 
----
-
-## 🚀 Next Steps
-
-* Try advanced techniques like stacking or ensemble averaging
-* Integrate Ridge/Lasso regression for additional comparison
-* Deploy the best model via a simple web app (e.g., Streamlit)
+Key predictors: number of rooms, property group, borough, and distance to amenities.
 
 ---
 
-Thanks for checking out the project! 🚀 Feel free to fork or reach out with suggestions!
+## 🚀 Setup
+```bash
+git clone https://github.com/SundayOni/House_Price_Prediction.git
+cd House_Price_Prediction
+pip install -r requirements.txt
+```
+
+Run notebooks in order:
+1. `notebooks/01_preprocessing_and_eda.ipynb`
+2. `notebooks/02_modelling.ipynb`
+
+---
+
+## 🔮 Future Improvements
+
+- Apply log transformation to price target to improve model fit
+- Explore ensemble stacking and Ridge/Lasso regression
+- Deploy best model as a Streamlit web app
